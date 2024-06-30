@@ -21,6 +21,9 @@ func SocketConn(w http.ResponseWriter, r *http.Request) {
 
 	for {
 		messageType, p, err := conn.ReadMessage()
+		log.Info("Message received: ", string(p))
+		log.Info("Message type: ", messageType)
+
 		if err != nil {
 			log.Println(err)
 			return
