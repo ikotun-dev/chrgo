@@ -13,14 +13,16 @@ type User struct {
 type Session struct {
 	ID       uint      `json:"id" gorm:"primary_key"`
 	SocketId string    `json:"socket_id"`
-	UserIDs  []uint    `json:"user_ids" gorm:"type:integer[]"`
-	Messages []Message `json:"messages" gorm:"foreignKey:ID;references:ID"`
+	UserIDs  []uint    `json:"user_ids" gorm:"type:integer[]; optional"`
+	Messages []Message `json:"messages" gorm:"foreignKey:SessionID"`
 }
 
 type Message struct {
-	ID        uint      `json:"id" gorm:"primary_key"`
-	Text      string    `json:"text"`
-	SessionID uint      `json:"session_id"`
-	UserID    uint      `json:"user_id"`
-	CreatedAt time.Time `json:"created_at"`
+	ID        uint   `json:"id" gorm:"primary_key"`
+	Text      string `json:"text"`
+	SessionID uint   `json:"session_id"`
+	// Session   Session   `json:"session" gorm:" foreignKey:SessionID;references:ID"`
+	UserID    uint      `json:"user_id" gorm:"optional"`
+	UserType  string    `json:"user_type" gorm:"optional"`
+	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
 }

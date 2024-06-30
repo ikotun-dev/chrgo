@@ -11,16 +11,17 @@ const dbUrl = "host=localhost user=postgres password=postgres dbname=chrgo port=
 
 var DB *gorm.DB
 
-func InitDB() {
-	DB, err := gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
+func InitDB() *gorm.DB {
+	db, err := gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
 	log.Info("Connected to database successfully")
-	DB.AutoMigrate(&models.User{})
-	DB.AutoMigrate(&models.Session{})
-	DB.AutoMigrate(&models.Message{})
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Session{})
+	db.AutoMigrate(&models.Message{})
 	log.Info("Migrated models successfully")
 	if err != nil {
 		panic(err)
 	}
-	// DB = db
+	DB = db
+	return DB
 
 }
