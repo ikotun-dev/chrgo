@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const dbUrl = "host=localhost user=postgres password=postgres dbname=chrgo port=5432 sslmode=disable"
+const dbUrl = "host=localhost user=postgres password=postgres dbname=chr port=5432 sslmode=disable"
 
 var DB *gorm.DB
 

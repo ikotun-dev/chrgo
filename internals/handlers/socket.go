@@ -28,7 +28,7 @@ func createSession(socket_id string) (uint, error) {
 		SocketId: socket_id,
 	}
 	result := config.DB.Create(&newSession)
-	log.Info("Session affected : ", result.RowsAffected)
+	log.Info("Session affected : ", newSession.ID)
 	if result.Error != nil {
 		return 0, result.Error
 	}
@@ -66,7 +66,7 @@ func SocketConn(w http.ResponseWriter, r *http.Request) {
 		log.Info("Message content: ", msg.Content)
 		//create message
 		newMessage := models.Message{
-			Text:      msg.Content,
+			Content:   msg.Content,
 			UserType:  msg.User,
 			SessionID: createdSessionID,
 		}
