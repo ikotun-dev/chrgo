@@ -3,9 +3,11 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/ikotun/chrgo/internals/config"
 	"github.com/ikotun/chrgo/internals/models"
+	"github.com/ikotun/chrgo/internals/responses"
 )
 
 type createUser struct {
@@ -20,12 +22,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&user)
 
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-
-		w.WriteHeader(http.StatusBadRequest)
-		errorMessage := map[string]string{"error": "Invalid request"}
-		json.NewEncoder(w).Encode(errorMessage)
-
+		responses.RequestError(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
 
@@ -34,16 +31,19 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		Password: user.Password,
 	}
 
+	//hash
+
 	result := config.DB.Create(&newUser)
 	if result.Error != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		errorMessage := map[string]string{"error": "Could not create user"}
-		json.NewEncoder(w).Encode(errorMessage)
+		if strings.Contains(result.Error.Error(), "23505") {
+			responses.RequestError(w, "Conflict! User with this credentials already exist.", http.StatusConflict)
+			return
+		}
+		responses.RequestError(w, "Could not create user", http.StatusInternalServerError)
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode("User Created")
+	w.WriteHeader(http.StatusCreated)
+	//OTP stuff
 
 }
