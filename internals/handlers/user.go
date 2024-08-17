@@ -25,14 +25,15 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		responses.RequestError(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
+	//TODO:  hash password
 
+	//new user
 	newUser := models.User{
 		Email:    user.Email,
 		Password: user.Password,
 	}
 
 	//hash
-
 	result := config.DB.Create(&newUser)
 	if result.Error != nil {
 		if strings.Contains(result.Error.Error(), "23505") {
@@ -43,7 +44,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusCreated)
+	// w.WriteHeader(http.StatusCreated)
+	responses.RequestSuccess(w, "User created successfully", http.StatusCreated)
 	//OTP stuff
 
 }

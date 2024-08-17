@@ -15,6 +15,6 @@ func RequestSuccess(w http.ResponseWriter, message string, code int) {
 	w.WriteHeader(code)
 
 	successReponse := HTTPResp{Message: message, Code: code}
-	json.NewEncoder(w).Encode(successReponse)
 
+	json.NewEncoder(w).Encode(successReponse)
 }
