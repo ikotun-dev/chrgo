@@ -33,7 +33,7 @@ type Chatbot struct {
 
 type Session struct {
 	ID        *uint      `json:"id" gorm:"primary_key"`
-	SocketId  string     `json:"socket_id"`
+	SocketID  string     `json:"socket_id"`
 	ThreadID  *string    `json:"thread_id"`
 	ChatbotID uint       `json:"chatbot_id"`
 	UserIDs   *[]uint    `json:"user_ids" gorm:"type:integer[]; optional"`

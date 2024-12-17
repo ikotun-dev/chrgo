@@ -13,7 +13,11 @@ func InitRouter() *chi.Mux {
 		w.Write([]byte("Hello World!"))
 	})
 
+	//user routes
 	r.Post("/create-user", handlers.CreateUser)
+
+	//session routes
+	r.Post("/create-session", handlers.CreateSession)
 	r.Get("/ws", handlers.SocketConn)
 	return r
 }

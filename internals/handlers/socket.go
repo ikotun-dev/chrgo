@@ -25,14 +25,18 @@ type message struct {
 
 func createSession(socket_id string) (uint, error) {
 	newSession := models.Session{
-		SocketId: socket_id,
+		SocketID: socket_id,
 	}
 	result := config.DB.Create(&newSession)
 	log.Info("Session affected : ", newSession.ID)
 	if result.Error != nil {
 		return 0, result.Error
 	}
-	return newSession.ID, nil
+	if newSession.ID != nil {
+		return *newSession.ID, nil
+	} else {
+		return 0, nil
+	}
 
 }
 
